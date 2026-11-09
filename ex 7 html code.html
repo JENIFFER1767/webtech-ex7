@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speed Wheels | Bike Showroom</title>
+
+<!-- jQuery for Exercise 7 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+header {
+    background: #151515;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 4px solid #d71920;
+}
+
+header h1 {
+    color: #ff3939;
+    margin: 0;
+}
+
+nav {
+    background: #292929;
+    padding: 14px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+    display: inline-block;
+    padding: 5px;
+}
+
+nav a:hover {
+    color: #ff3939;
+}
+
+.hero {
+    background: linear-gradient(120deg, #171717, #444);
+    color: white;
+    text-align: center;
+    padding: 65px 20px;
+}
+
+.hero h2 {
+    font-size: 36px;
+}
+
+button, .btn {
+    background: #c41620;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 2px;
+}
+
+button:hover, .btn:hover {
+    background: #8f0c13;
+}
+
+section {
+    padding: 35px 6%;
+    scroll-margin-top: 65px;
+}
+
+h2 {
+    color: #153e70;
+    border-bottom: 2px solid #c41620;
+    padding-bottom: 8px;
+}
+
+h3 {
+    color: #a61019;
+}
+
+.cards, .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.card, .panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px #00000012;
+    margin-bottom: 15px;
+}
+
+.bike-image {
+    width: 100%;
+    height: 155px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #c41620;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin: 15px 0;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+th {
+    background: #222;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #eee;
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font: inherit;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    width: auto;
+}
+
+.form-grid, .budget-grid, .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.result {
+    padding: 18px 8px;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    overflow-wrap: anywhere;
+}
+
+.rent { background: #244cc5; }
+.accessories { background: #25833a; }
+.emergency { background: #1388a7; }
+.saving { background: #cc2778; }
+
+.notice {
+    font-weight: bold;
+    color: #153e70;
+}
+
+footer {
+    background: #151515;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+.animation-area {
+    position: relative;
+    height: 100px;
+    background: #e6e6e6;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.moving-bike {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    font-size: 42px;
+}
+
+.fade-box {
+    width: 100px;
+    height: 100px;
+    background: green;
+    margin: 15px 0;
+}
+
+.bike-preview {
+    background: #eee;
+    border-radius: 8px;
+    text-align: center;
+    padding: 25px;
+    margin: 15px 0;
+}
+
+.bike-art {
+    display: inline-block;
+    font-size: 90px;
+    transition: transform .2s, filter .2s;
+}
+
+.tint-preview {
+    height: 35px;
+    border: 1px solid #aaa;
+    margin: 10px 0;
+    background: lightblue;
+}
+
+footer a {
+    color: white;
+}
+
+@media(max-width: 600px) {
+    nav { position: static; }
+    nav a { margin: 3px 5px; }
+    section { padding: 25px 4%; }
+}
+</style>
+</head>
+
+<body>
+
+<header id="home">
+    <h1>SPEED WHEELS</h1>
+    <p>Your destination for premium sports bikes, commuter bikes, cruiser motorcycles and electric bikes.</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#bikes">Bikes</a>
+    <a href="#features">Features</a>
+    <a href="#booking">Book</a>
+    <a href="#contact">Contact</a>
+    <a href="#ex7">Interactive Tools</a>
+</nav>
+
+<div class="hero">
+    <h2>Speed Wheels</h2>
+    <p>Discover your dream bike with the best offers and services.</p>
+    <a class="btn" href="#bikes">Explore Bikes</a>
+    <a class="btn" href="#booking">Book Now</a>
+</div>
+
+<section id="about">
+    <h2>About Us</h2>
+    <p>
+        Welcome to Speed Wheels Bike Showroom. We provide high quality
+        sports bikes, commuter bikes and premium motorcycles with attractive
+        offers and services.
+    </p>
+    <p>
+        Customers can explore different bike models, compare prices and
+        enquire about finance options and accessories.
+    </p>
+</section>
+
+<section id="bikes">
+    <h2>Popular Bike Models</h2>
+
+    <div class="cards">
+        <div class="card">
+            <img class="bike-image"
+                 src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=700&q=80"
+                 alt="Motorcycle">
+            <h3>Yamaha R15 V4</h3>
+            <p>Engine: 155 cc</p>
+            <p class="price">₹1,85,000</p>
+            <button type="button" class="choose-bike"
+                data-bike="Yamaha R15 V4" data-price="185000">
+                Choose Bike
+            </button>
+        </div>
+
+        <div class="card">
+            <img class="bike-image"
+                 src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=700&q=80"
+                 alt="Cruiser motorcycle">
+            <h3>Royal Enfield Hunter 350</h3>
+            <p>Engine: 349 cc</p>
+            <p class="price">₹1,75,000</p>
+            <button type="button" class="choose-bike"
+                data-bike="Royal Enfield Hunter 350" data-price="175000">
+                Choose Bike
+            </button>
+        </div>
+
+        <div class="card">
+            <img class="bike-image"
+                 src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=700&q=80"
+                 alt="Sports motorcycle">
+            <h3>KTM Duke 250</h3>
+            <p>Engine: 249 cc</p>
+            <p class="price">₹2,30,000</p>
+            <button type="button" class="choose-bike"
+                data-bike="KTM Duke 250" data-price="230000">
+                Choose Bike
+            </button>
+        </div>
+    </div>
+
+    <h3>Bike Price Details</h3>
+    <table>
+        <tr>
+            <th>Bike Model</th>
+            <th>Engine</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>Yamaha R15 V4</td>
+            <td>155 cc</td>
+            <td>₹1,85,000</td>
+        </tr>
+        <tr>
+            <td>Royal Enfield Hunter 350</td>
+            <td>349 cc</td>
+            <td>₹1,75,000</td>
+        </tr>
+        <tr>
+            <td>KTM Duke 250</td>
+            <td>249 cc</td>
+            <td>₹2,30,000</td>
+        </tr>
+    </table>
+    <small>Prices are sample values for this educational project.</small>
+</section>
+
+<section id="features">
+    <h2>Showroom Features</h2>
+
+    <div class="grid">
+        <div class="panel">
+            <h3>Finance Facility</h3>
+            <p>Easy EMI and loan options available.</p>
+        </div>
+        <div class="panel">
+            <h3>Service Center</h3>
+            <p>Experienced technicians for bike servicing.</p>
+        </div>
+        <div class="panel">
+            <h3>Insurance</h3>
+            <p>Quick insurance assistance for all models.</p>
+        </div>
+    </div>
+
+    <h3>Bike Purchase Process</h3>
+    <ol>
+        <li>Select Your Bike
+            <ol>
+                <li>Sports Bike</li>
+                <li>Commuter Bike</li>
+                <li>Cruiser Bike</li>
+            </ol>
+        </li>
+        <li>Choose Payment Method
+            <ol>
+                <li>Cash</li>
+                <li>EMI</li>
+            </ol>
+        </li>
+    </ol>
+
+    <h3>Facilities Available</h3>
+    <ul>
+        <li>Bike Sales
+            <ul>
+                <li>New Bikes</li>
+                <li>Used Bikes</li>
+            </ul>
+        </li>
+        <li>Customer Support
+            <ul>
+                <li>Bike Service</li>
+                <li>Spare Parts</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section id="media">
+    <h2>Experience Speed Wheels</h2>
+
+    <div class="panel">
+        <h3>Bike Engine Sound</h3>
+        <p>Add your audio file named <b>bike.mp3</b> to the same folder.</p>
+        <audio controls>
+            <source src="bike.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="panel">
+        <h3>Bike Review</h3>
+        <p>Add your video file named <b>bike.mp4</b> to the same folder.</p>
+        <video controls width="100%" style="max-width:600px">
+            <source src="bike.mp4" type="video/mp4">
+            Your browser does not support the video element.
+        </video>
+    </div>
+
+    <div class="panel">
+        <h3>Showroom Brochure</h3>
+        <p>Add your brochure file named <b>brochure.pdf</b> to the same folder.</p>
+        <a href="brochure.pdf" target="_blank">View Brochure</a>
+    </div>
+
+    <div class="panel">
+        <h3>Our Location</h3>
+        <iframe
+            src="https://www.google.com/maps?q=Coimbatore&output=embed"
+            width="100%" height="300"
+            style="border:0" loading="lazy"
+            title="Showroom location map">
+        </iframe>
+    </div>
+</section>
+
+<section id="booking">
+    <h2>Bike Booking</h2>
+
+    <div class="panel">
+        <form id="bookingForm">
+            <h3>Customer Details</h3>
+
+            <div class="form-grid">
+                <label>Full Name
+                    <input type="text" id="customerName"
+                           placeholder="Enter your name" required>
+                </label>
+
+                <label>Email
+                    <input type="email" placeholder="Enter your email" required>
+                </label>
+
+                <label>Password
+                    <input type="password" placeholder="Enter password" required>
+                </label>
+
+                <label>Phone Number
+                    <input type="tel" placeholder="Enter phone number" required>
+                </label>
+
+                <label>Date of Booking
+                    <input type="date" required>
+                </label>
+
+                <label>Bike Model
+                    <select id="bookingBike" required>
+                        <option value="">Select Bike</option>
+                        <option>Yamaha R15 V4</option>
+                        <option>Royal Enfield Hunter 350</option>
+                        <option>KTM Duke 250</option>
+                    </select>
+                </label>
+            </div>
+
+            <p><b>Gender</b></p>
+            <label><input type="radio" name="gender" value="Male"> Male</label>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
+
+            <p><b>Required Services</b></p>
+            <label><input type="checkbox" name="services" value="Test Ride"> Test Ride</label>
+            <label><input type="checkbox" name="services" value="Finance"> Finance</label>
+            <label><input type="checkbox" name="services" value="Insurance"> Insurance</label>
+
+            <label>Address
+                <textarea placeholder="Enter your address"></textarea>
+            </label>
+
+            <label>Upload Driving License
+                <input type="file">
+            </label>
+
+            <div class="form-grid">
+                <label>Preferred Delivery Time
+                    <input type="time">
+                </label>
+                <label>Preferred Month
+                    <input type="month">
+                </label>
+                <label>Preferred Week
+                    <input type="week">
+                </label>
+            </div>
+
+            <label>Booking Progress</label>
+            <progress value="60" max="100" style="width:100%"></progress>
+
+            <br><br>
+            <button type="submit">Confirm Booking</button>
+            <button type="reset">Reset Form</button>
+            <p id="bookingMessage" class="notice"></p>
+        </form>
+    </div>
+</section>
+
+<section id="smart">
+    <h2>Smart Features</h2>
+
+    <div class="panel">
+        <h3>Current Time</h3>
+        <h2 id="clock">00:00:00</h2>
+    </div>
+
+    <div class="panel">
+        <h3>JavaScript Styling</h3>
+        <p id="styleText">Discover your favourite motorcycle!</p>
+        <button type="button" id="changeStyle">Change Style</button>
+    </div>
+
+    <div class="panel">
+        <h3>Show / Hide</h3>
+        <p id="welcomeText">Welcome to Speed Wheels!</p>
+        <button type="button" id="hideText">Hide</button>
+        <button type="button" id="showText">Show</button>
+    </div>
+
+    <div class="panel">
+        <h3>Mouse Event</h3>
+        <p id="mouseText">Move your mouse over this text.</p>
+    </div>
+
+    <div class="panel">
+        <h3>Animation</h3>
+        <div class="animation-area">
+            <div class="moving-bike" id="movingBike">🏍️</div>
+        </div>
+        <button type="button" id="startAnimation">Start</button>
+        <button type="button" id="stopAnimation">Stop</button>
+    </div>
+
+    <div class="panel">
+        <h3>Fade Animation</h3>
+        <div class="fade-box" id="fadeBox"></div>
+        <button type="button" id="fadeOut">Fade Out</button>
+        <button type="button" id="fadeReset">Reset</button>
+    </div>
+
+    <div class="panel">
+        <h3>Date Details</h3>
+        <button type="button" id="showDate">Show Date</button>
+        <p id="dateResult"></p>
+    </div>
+
+    <div class="panel">
+        <h3>Booking Confirmation</h3>
+        <button type="button" id="confirmButton">Confirm Booking</button>
+    </div>
+</section>
+
+<!-- EXERCISE 7: WORKING WITH JQUERY -->
+<section id="ex7">
+    <h2>Working with jQuery</h2>
+    <p>Use the interactive tools below to calculate a bike budget, calculate an order, and customize a bike.</p>
+
+    <div class="panel">
+        <h3>1. Bike Budget Calculator</h3>
+
+        <label>Total Amount (₹)
+            <input type="number" id="budgetAmount" value="200000" min="1">
+        </label>
+
+        <div class="budget-grid">
+            <label>Bike Budget (%)
+                <input type="number" id="budgetBike" value="70" min="0" max="100">
+            </label>
+
+            <label>Accessories (%)
+                <input type="number" id="budgetAcc" value="15" min="0" max="100">
+            </label>
+
+            <label>Emergency (%)
+                <input type="number" id="budgetEmer" value="5" min="0" max="100">
+            </label>
+
+            <label>Savings (%)
+                <input type="number" id="budgetSave" value="10" min="0" max="100">
+            </label>
+        </div>
+
+        <button type="button" id="evaluateBudget">Evaluate My Money</button>
+        <p id="budgetMessage" class="notice"></p>
+
+        <div class="result-grid">
+            <div class="result rent">Bike Budget<br><span id="bikeResult">₹140000.00</span></div>
+            <div class="result accessories">Accessories<br><span id="accResult">₹30000.00</span></div>
+            <div class="result emergency">Emergency<br><span id="emerResult">₹10000.00</span></div>
+            <div class="result saving">Savings<br><span id="saveResult">₹20000.00</span></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3>2. Bike Order Calculation</h3>
+
+        <label>Select Bike
+            <select id="orderBike">
+                <option value="185000">Yamaha R15 V4 - ₹1,85,000</option>
+                <option value="175000">Royal Enfield Hunter 350 - ₹1,75,000</option>
+                <option value="230000">KTM Duke 250 - ₹2,30,000</option>
+            </select>
+        </label>
+
+        <label>Quantity
+            <input type="number" id="quantity" min="1" max="10" value="1">
+        </label>
+
+        <p><label><input type="checkbox" class="orderAccessory" value="2500"> Helmet - ₹2,500</label></p>
+        <p><label><input type="checkbox" class="orderAccessory" value="1500"> Gloves - ₹1,500</label></p>
+        <p><label><input type="checkbox" class="orderAccessory" value="3000"> Riding Jacket - ₹3,000</label></p>
+
+        <button type="button" id="calculateOrder">Calculate Order</button>
+        <p class="price" id="orderTotal">Total: ₹1,85,000</p>
+
+        <button type="button" id="useBike">Use Bike in Booking Form</button>
+    </div>
+
+    <div class="panel">
+        <h3>3. Bike Customization Workshop</h3>
+
+        <label>Bike Color
+            <select id="customColor">
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="black">Black</option>
+                <option value="orange">Orange</option>
+            </select>
+        </label>
+
+        <label>Glass Tint
+            <select id="customTint">
+                <option value="lightblue">Light Blue</option>
+                <option value="#777777">Grey</option>
+                <option value="#222222">Dark</option>
+                <option value="#b7e3b0">Light Green</option>
+            </select>
+        </label>
+
+        <label>Tyre Size: <span id="tyreLabel">100%</span>
+            <input type="range" id="tyreRange" min="80" max="125" value="100">
+        </label>
+
+        <div class="bike-preview">
+            <div id="customBikeArt" class="bike-art">🏍️</div>
+        </div>
+
+        <p><b>Glass Tint Preview</b></p>
+        <div id="glassPreview" class="tint-preview"></div>
+
+        <button type="button" id="resetCustom">Reset Customization</button>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact Us</h2>
+    <div class="panel">
+        <p>Email: speedwheels@gmail.com</p>
+        <p>Phone: +91 9876543210</p>
+        <p>Visit our partner website:
+            <a href="https://www.bikewale.com/" target="_blank">BikeWale</a>
+        </p>
+    </div>
+</section>
+
+<footer>
+    <p>Thank you for visiting Speed Wheels Bike Showroom.</p>
+    <p>Book your favourite bike today and enjoy a safe and comfortable ride.</p>
+    <p>© 2026 Speed Wheels. All Rights Reserved.</p>
+    <a href="#home">Back to Top</a>
+</footer>
+
+<script>
+// EXERCISE 6: JAVASCRIPT FEATURES
+
+// Digital clock
+function displayClock() {
+    let now = new Date();
+    document.getElementById("clock").textContent =
+        now.toLocaleTimeString();
+}
+displayClock();
+setInterval(displayClock, 1000);
+
+// Change style
+document.getElementById("changeStyle").onclick = function () {
+    let element = document.getElementById("styleText");
+    element.style.color = "blue";
+    element.style.fontSize = "25px";
+    element.style.backgroundColor = "yellow";
+};
+
+// Show and hide
+document.getElementById("hideText").onclick = function () {
+    document.getElementById("welcomeText").style.display = "none";
+};
+
+document.getElementById("showText").onclick = function () {
+    document.getElementById("welcomeText").style.display = "block";
+};
+
+// Mouse events
+let mouseText = document.getElementById("mouseText");
+
+mouseText.onmouseover = function () {
+    this.style.fontSize = "28px";
+    this.style.color = "red";
+};
+
+mouseText.onmouseout = function () {
+    this.style.fontSize = "16px";
+    this.style.color = "#222";
+};
+
+// Move the bike using a timing event
+let animationPosition = 0;
+let animationTimer = null;
+
+document.getElementById("startAnimation").onclick = function () {
+    if (animationTimer !== null) return;
+
+    animationTimer = setInterval(function () {
+        animationPosition += 3;
+
+        if (animationPosition > 1000) {
+            animationPosition = 0;
+        }
+
+        let area = document.querySelector(".animation-area");
+        let bike = document.getElementById("movingBike");
+        let maxPosition = area.clientWidth - bike.offsetWidth;
+
+        bike.style.left = Math.min(animationPosition, maxPosition) + "px";
+
+        if (animationPosition >= maxPosition) {
+            clearInterval(animationTimer);
+            animationTimer = null;
+        }
+    }, 50);
+};
+
+document.getElementById("stopAnimation").onclick = function () {
+    clearInterval(animationTimer);
+    animationTimer = null;
+};
+
+// Fade animation
+document.getElementById("fadeOut").onclick = function () {
+    let opacity = 1;
+    let box = document.getElementById("fadeBox");
+
+    box.style.opacity = opacity;
+
+    let fadeTimer = setInterval(function () {
+        opacity -= 0.05;
+
+        if (opacity <= 0) {
+            opacity = 0;
+            clearInterval(fadeTimer);
+        }
+
+        box.style.opacity = opacity;
+    }, 50);
+};
+
+document.getElementById("fadeReset").onclick = function () {
+    let box = document.getElementById("fadeBox");
+    box.style.opacity = 1;
+    box.style.display = "block";
+};
+
+// Date object
+document.getElementById("showDate").onclick = function () {
+    let today = new Date();
+
+    document.getElementById("dateResult").textContent =
+        "Date: " + today.toDateString() +
+        " | Time: " + today.toTimeString();
+};
+
+// Booking form demo
+document.getElementById("bookingForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    document.getElementById("bookingMessage").textContent =
+        "Thank you, " +
+        document.getElementById("customerName").value +
+        "! Your booking enquiry has been prepared. This demo does not send it to a server.";
+});
+
+document.getElementById("bookingForm").addEventListener("reset", function () {
+    document.getElementById("bookingMessage").textContent = "";
+});
+
+document.getElementById("confirmButton").onclick = function () {
+    alert("Thank you for choosing Speed Wheels!");
+};
+
+
+// EXERCISE 7: JQUERY FEATURES
+
+$(document).ready(function () {
+
+    // Select a bike from the showroom
+    $(".choose-bike").click(function () {
+        let bike = $(this).data("bike");
+        let price = String($(this).data("price"));
+
+        $("#bookingBike").val(bike);
+        $("#orderBike").val(price);
+
+        $("html, body").animate({
+            scrollTop: $("#booking").offset().top - 60
+        }, 500);
+
+        calculateOrder();
+    });
+
+    // Budget calculator
+    $("#evaluateBudget").click(function () {
+        let amount = Number($("#budgetAmount").val());
+
+        let percentages = [
+            Number($("#budgetBike").val()),
+            Number($("#budgetAcc").val()),
+            Number($("#budgetEmer").val()),
+            Number($("#budgetSave").val())
+        ];
+
+        if ($("#budgetAmount").val() === "" ||
+            !Number.isFinite(amount) || amount <= 0 ||
+            percentages.some(p => !Number.isFinite(p) || p < 0 || p > 100)) {
+            alert("Enter a valid amount and percentages between 0 and 100.");
+            return;
+        }
+
+        let total = percentages.reduce((sum, p) => sum + p, 0);
+
+        if (total !== 100) {
+            alert("The total percentage must equal 100%.");
+            $("#budgetMessage").text("Your current percentage total is " + total + "%.");
+            return;
+        }
+
+        $("#bikeResult").text("₹" + (amount * percentages[0] / 100).toFixed(2));
+        $("#accResult").text("₹" + (amount * percentages[1] / 100).toFixed(2));
+        $("#emerResult").text("₹" + (amount * percentages[2] / 100).toFixed(2));
+        $("#saveResult").text("₹" + (amount * percentages[3] / 100).toFixed(2));
+
+        $("#budgetMessage").text("Budget evaluated successfully!");
+    });
+
+    // Bike order calculator
+    function calculateOrder() {
+        let price = Number($("#orderBike").val());
+        let quantity = Number($("#quantity").val());
+
+        if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
+            $("#orderTotal").text("Enter a quantity between 1 and 10.");
+            return;
+        }
+
+        let extra = 0;
+
+        $(".orderAccessory:checked").each(function () {
+            extra += Number($(this).val());
+        });
+
+        let total = (price * quantity) + extra;
+
+        $("#orderTotal").text(
+            "Estimated Total: ₹" + total.toLocaleString("en-IN")
+        );
+    }
+
+    $("#calculateOrder").click(calculateOrder);
+
+    $("#orderBike, #quantity, .orderAccessory").on("change input", calculateOrder);
+
+    $("#useBike").click(function () {
+        let selectedBike = $("#orderBike option:selected").text().split(" - ")[0];
+
+        $("#bookingBike").val(selectedBike);
+
+        $("html, body").animate({
+            scrollTop: $("#booking").offset().top - 60
+        }, 500);
+    });
+
+    // Bike color, tint and size customization
+    function updateBike() {
+        let color = $("#customColor").val();
+
+        let filters = {
+            red: "none",
+            blue: "hue-rotate(180deg)",
+            green: "hue-rotate(75deg)",
+            black: "grayscale(1) brightness(.55)",
+            orange: "hue-rotate(320deg)"
+        };
+
+        $("#customBikeArt")
+            .css("filter", filters[color])
+            .css("transform", "scale(" + Number($("#tyreRange").val()) / 100 + ")");
+
+        $("#glassPreview").css("background-color", $("#customTint").val());
+
+        $("#tyreLabel").text($("#tyreRange").val() + "%");
+    }
+
+    $("#customColor, #customTint, #tyreRange").on("input change", updateBike);
+
+    $("#resetCustom").click(function () {
+        $("#customColor").val("red");
+        $("#customTint").val("lightblue");
+        $("#tyreRange").val(100);
+        updateBike();
+    });
+
+    calculateOrder();
+    updateBike();
+
+});
+</script>
+
+</body>
+</html>
